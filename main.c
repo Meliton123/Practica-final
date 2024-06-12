@@ -71,13 +71,10 @@ int main()
             int jx = atoi(cmd);
             int jy = atoi(&cmd[5]);
             int jb = atoi(&cmd[10]);
-            borra();
-            refresca();
-            sprintf(cmd, "%i-%i-%i", ajusteX(jx), ajusteY(jy), jb);
-            color(NEGRO);
-            texto(10,100, cmd);
+
           
-             // cx += ajusteX(jx);
+             cx += ajusteX(jx);
+            
             //cy += ajusteY(jy);
             if(jb) clic = false;
             else clic = true;
@@ -95,7 +92,7 @@ int main()
         }
 
         
-/*
+
         acel += GRAVEDAD;
         cy += acel;
         if (cy + ajolote.alto > valto())
@@ -172,7 +169,7 @@ int main()
             //color(MAGENTA);
             //textoExt(x + 30, y - 30, "Jedchot", 30, false, true, false, "Comic Sans MS");
         }
-        */
+        
         
 
         refresca();
