@@ -12,8 +12,8 @@
 #include "serial.h"
 #define GRAVEDAD 1
 
-#define AJUSTEX 3180
-#define AJUSTEY 3165
+#define AJUSTEX 2780
+#define AJUSTEY 2820
 #define VELXMAX 20
 #define VELYMAX 20
 #define VALMAX 4095
@@ -46,7 +46,7 @@ int main()
     bool fi = false, fd = false, fs = false, clic = false;
     int cx = 100, cy = 100, acel = 0, cancho = 100, calto = 100;
     MWImage ajolote = creaImagenYMascaraBMP("ajoloteN.bmp", "ajoloteM.bmp");
-
+    MWImage fondo = creaImagenBMP("fondo.bmp");
     SerialPort esp32 = initSerialPort("COM4", B115200);
     char cmd[MAX_DATA_LENGTH];
     
@@ -58,12 +58,12 @@ int main()
     
     titulo("Progra Avanzada Energia");
     ventana(800, 600);
-    color_fondo_rgb(135,206 ,250 );
+    color_fondo(BLANCO);
 
     t = tecla();
     while (t != ESCAPE)
     {
-
+        
         sprintf(cmd, "dame_datos\n");
         writeSerialPort(cmd, strlen(cmd), &esp32);
         Sleep(1);
@@ -71,9 +71,13 @@ int main()
             int jx = atoi(cmd);
             int jy = atoi(&cmd[5]);
             int jb = atoi(&cmd[10]);
-            //sprintf(cmd, "%i-%i-%i", ajusteX(jx), ajusteY(jy), jb);
-            //texto(10,100, cmd);
-            cx += ajusteX(jx);
+            borra();
+            refresca();
+            sprintf(cmd, "%i-%i-%i", ajusteX(jx), ajusteY(jy), jb);
+            color(NEGRO);
+            texto(10,100, cmd);
+          
+             // cx += ajusteX(jx);
             //cy += ajusteY(jy);
             if(jb) clic = false;
             else clic = true;
@@ -87,9 +91,11 @@ int main()
                 sprintf(cmd, "!vibra\n");
                 writeSerialPort(cmd, strlen(cmd), &esp32);
             }
+            
         }
 
-
+        
+/*
         acel += GRAVEDAD;
         cy += acel;
         if (cy + ajolote.alto > valto())
@@ -139,7 +145,8 @@ int main()
 
         borra();
         color(BLANCO);
-
+        muestraImagen(&fondo);
+        
         
 
 
@@ -165,7 +172,7 @@ int main()
             //color(MAGENTA);
             //textoExt(x + 30, y - 30, "Jedchot", 30, false, true, false, "Comic Sans MS");
         }
-
+        */
         
 
         refresca();
