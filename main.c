@@ -65,6 +65,7 @@ int main()
     while (t != ESCAPE)
     {
         
+
         sprintf(cmd, "dame_datos\n");
         writeSerialPort(cmd, strlen(cmd), &esp32);
         Sleep(1);
@@ -75,8 +76,7 @@ int main()
 
           
              cx += ajusteX(jx);
-            
-            //cy += ajusteY(jy);
+             cy += ajusteY(jy);
             if(jb) clic = false;
             else clic = true;
             if(clic) {
@@ -93,54 +93,6 @@ int main()
         }
 
         
-
-        acel += GRAVEDAD;
-        cy += acel;
-        if (cy + ajolote.alto > valto())
-        {
-            cy = valto() - ajolote.alto;
-            acel = 0;
-        }
-        t = teclaDown();
-        //raton(&x, &y);
-
-        if (t == IZQUIERDA)
-        {
-            fi = true;
-        }
-        if (t == DERECHA)
-        {
-            fd = true;
-        }
-        //if (t == ESPACIO)
-        if(clic)
-        {
-            acel = -20;
-        }
-        if( t == RETURN) {
-            fs = !fs;
-            fullscreen(fs);
-        }
-
-        t = teclaUp();
-        if (t == IZQUIERDA)
-            fi = false;
-        if (t == DERECHA)
-            fd = false;
-
-        if (fi)
-            cx -= 10;
-        if (fd)
-            cx += 10;
-
-        if (cx + ajolote.ancho > vancho())
-            cx = vancho() - ajolote.ancho;
-        if (cx < 0)
-            cx = 0;
-
-        ajolote.pos_x = cx;
-        ajolote.pos_y = cy;
-
         borra();
         color(BLANCO);
         muestraImagen(&fondo);
@@ -150,10 +102,7 @@ int main()
 
         
         textoExt(10,10, "Precione ESC para salir", 22, false, false, false, "Arial");
-        //color(ROJO);
-        //rectangulo_lleno(cx, cy, cx + cancho, cy + calto);
 
-        muestraImagen(&ajolote);
 
         color(BLANCO);
         circulo(cx + x, cy + y, 30);
@@ -163,18 +112,12 @@ int main()
         linea ( cx + x - 10,cy + y,cx + x - 25,cy + y);
         linea(cx + x + 10, cy + y, cx + x + 25, cy +  y);
 
-        //if (raton_boton_izq())
-        if(clic)
-        {
-            // texto(x+30,y, "Jedchot");
-            //color(MAGENTA);
-            //textoExt(x + 30, y - 30, "Jedchot", 30, false, true, false, "Comic Sans MS");
-        }
+
         
         
 
         refresca();
-        //Sleep(1);
+  
     }
     cierra();
     closeSerial(&esp32);
