@@ -45,7 +45,8 @@ int main()
     float x = 0, y = 0;
     bool fi = false, fd = false, fs = false, clic = false;
     int cx = 100, cy = 100, acel = 0, cancho = 100, calto = 100;
-    MWImage ajolote = creaImagenYMascaraBMP("ajoloteN.bmp", "ajoloteM.bmp");
+    MWImage pato = creaImagenYMascaraBMP("patoN.bmp", "patoM.bmp");
+     MWImage ajolote = creaImagenYMascaraBMP("ajoloteN.bmp", "ajoloteM.bmp");
     MWImage fondo = creaImagenBMP("fondo.bmp");
     SerialPort esp32 = initSerialPort("COM4", B115200);
     char cmd[MAX_DATA_LENGTH];
@@ -155,12 +156,12 @@ int main()
         muestraImagen(&ajolote);
 
         color(BLANCO);
-        circulo(x, y, 30);
-        circulo(x, y, 20);
-        linea(x, y - 10, x, y - 25);
-        linea(x, y + 10, x, y + 25);
-        linea(x - 10, y, x - 25, y);
-        linea(x + 10, y, x + 25, y);
+        circulo(cx + x, cy + y, 30);
+        circulo(cx + x, cy + y, 20);
+        linea(cx + x, cy + y - 10, cx + x, cy + y - 25);
+        linea(cx + x, cy + y + 10, cx + x,cy + y + 25);
+        linea ( cx + x - 10,cy + y,cx + x - 25,cy + y);
+        linea(cx + x + 10, cy + y, cx + x + 25, cy +  y);
 
         //if (raton_boton_izq())
         if(clic)
