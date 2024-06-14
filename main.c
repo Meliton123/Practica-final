@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @authors Castelan Meliton Uriel Agustín, Duarte Arellanes Sebastian, Ojeda Flores Sebastian 
+ * @authors Castelan Meliton Uriel Agustín, Duarte Arellanes Sebastian, Ojeda Flores Sebastian
  * @brief Duck hunt pero con MiniWin
  * @version 0.1
  * @date 2024-06-13
