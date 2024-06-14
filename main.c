@@ -1,17 +1,17 @@
 /**
  * @file main.c
- * @author Jose Luis Cruz (jlcruz@ipn.mx)
- * @brief
+ * @authors Castelan Meliton Uriel Agustín, Duarte Arellanes Sebastian, Ojeda Flores Sebastian 
+ * @brief Duck hunt pero con MiniWin
  * @version 0.1
- * @date 2024-06-03
+ * @date 2024-06-13
  *
  * @copyright Copyright (c) 2024
  *
  */
 #include "miniwin.h"
 #include "serial.h"
-#include <stdlib.h> // Para srand() y rand()
-#include <time.h>   // Para time()
+#include <stdlib.h> 
+#include <time.h>   
 
 #define GRAVEDAD 1
 
@@ -24,8 +24,8 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
 #define CIRCLE_RADIUS 30
-#define PATO_WIDTH 50 // Ancho del pato
-#define PATO_HEIGHT 50 // Alto del pato
+#define PATO_WIDTH 50 
+#define PATO_HEIGHT 50 
 
 int ajusteX(int x) {
     x -= AJUSTEX;
@@ -47,20 +47,20 @@ int ajusteY(int x) {
     return x;
 }
 
-// Función para verificar si la mira está sobre el pato
+
 bool isMiraSobrePato(int cx, int cy, int patoX, int patoY) {
-    // Verificar si la mira está dentro del área del pato
+    
     return (cx >= patoX && cx <= patoX + PATO_WIDTH) && (cy >= patoY && cy <= patoY + PATO_HEIGHT);
 }
 
-// Función para generar una posición Y aleatoria para el pato
+
 int generarPosYAleatoria() {
-    return rand() % 101 + 100; // Devuelve un valor entre 0 y 100
+    return rand() % 101 + 100; 
 }
 
 int main()
 {
-    srand(time(NULL)); // Inicializar el generador de números aleatorios
+    srand(time(NULL)); 
 
     int t, puntuacion = 0;
     float x = 0, y = 0;
@@ -71,7 +71,7 @@ int main()
     SerialPort esp32 = initSerialPort("COM4", B115200);
     char cmd[MAX_DATA_LENGTH];
 
-    // Inicializar posición del pato
+
     pato.pos_x = -25;
     pato.pos_y = generarPosYAleatoria();
 
@@ -91,16 +91,16 @@ int main()
         writeSerialPort(cmd, strlen(cmd), &esp32);
         Sleep(1);
         if (readSerialPort(cmd, MAX_DATA_LENGTH, &esp32)) {
-            // Obtención de los valores del joystick
+            
             int jx = atoi(cmd);
             int jy = atoi(&cmd[5]);
             int jb = atoi(&cmd[10]);
 
-            // Ajustar las coordenadas según los datos del joystick
+            
             cx += ajusteX(jx);
             cy += ajusteY(jy);
 
-            // Aplicar hitbox de la mira dentro de los límites de la ventana
+            
             if (cx - CIRCLE_RADIUS < 0) {
                 cx = CIRCLE_RADIUS;
             }
@@ -114,7 +114,7 @@ int main()
                 cy = WINDOW_HEIGHT - CIRCLE_RADIUS;
             }
 
-            // Manejar el clic del botón
+            
             clic = !jb;
             if (clic) {
                 sprintf(cmd, "vibra\n");
@@ -127,45 +127,41 @@ int main()
                 writeSerialPort(cmd, strlen(cmd), &esp32);
             }
 
-            // Verificar si la mira está sobre el pato y si se hizo clic
+        
             if (clic && isMiraSobrePato(cx, cy, pato.pos_x, pato.pos_y)) {
-                // Reaparecer el pato fuera de la ventana a la izquierda con una nueva posición Y
+           
                 puntuacion += 100;
                 pato.pos_x = -15;
                 pato.pos_y = generarPosYAleatoria();
 
-                // Enviar la puntuación al ESP32
                 sprintf(cmd, "puntuacion %d\n", puntuacion);
                 writeSerialPort(cmd, strlen(cmd), &esp32);
             }
         }
 
-        // Mover el pato hacia la derecha
         pato.pos_x += acel;
 
-        // Si el pato se sale de la ventana por la derecha, reaparecerlo a la izquierda
+       
         if (pato.pos_x > WINDOW_WIDTH) {
             pato.pos_x = -15;
             pato.pos_y = generarPosYAleatoria();
         }
 
-        // Dibujo fondo
         borra();
         color(BLANCO);
         muestraImagen(&fondo);
 
-        // Texto de instrucción
+   
         textoExt(10, 10, "Presione ESC para salir", 22, false, false, false, "Arial");
 
-        // Mostrar la puntuación
+     
         char textoPuntuacion[50];
         sprintf(textoPuntuacion, "Puntuacion: %d", puntuacion);
         textoExt(10, 40, textoPuntuacion, 22, false, false, false, "Arial");
 
-        // Dibujo del pato
+     
         muestraImagen(&pato);
 
-        // Dibujo de la mira
         color(BLANCO);
         circulo(cx, cy, CIRCLE_RADIUS);
         circulo(cx, cy, 20);
